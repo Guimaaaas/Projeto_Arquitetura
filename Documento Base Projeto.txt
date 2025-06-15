@@ -1,0 +1,33 @@
+Documento para usar de base pro projeto:
+
+Números de apartamentos:
+
+10 Andares
+4 Apartamentos p/ andar
+
+{
+101,102,103,104,
+201,202,203,204,
+301,302,303,304,
+401,402,403,404,
+501,502,503,504,
+601,602,603,604,
+701,702,703,704,
+801,802,803,804,
+901,902,903,904,
+1001,1002,1003,1004
+}
+
+Dados de Apto:
+
+Numero: número do apartamento - deve ser um número que existe
+num moradores: contador de moradores - o máximo deve ser 5
+moradores: lista de nomes de moradores
+automóveis: lista de automoveis - um apartamento pode ter 1 carro ou 2 motos, não é possível ter 1 carro e 1 moto
+status: flag vazio ou não vazio
+
+Moradores: nome;
+Automovel: flag (c = Carro, m = Moto), modelo, cor;
+
+Apto Exemplo:
+101, 3, 1, auto{[c, hb20, vermelho], [m, biz, azul]}, moradores{joao, maria, joana}
