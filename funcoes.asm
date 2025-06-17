@@ -91,7 +91,109 @@ ad_pessoa:
 		addi $v0, $zero, 2
 		#fim da funcao
 		jr $ra
+
+	strcpy:
+		move $t0, $a0 #move o endereco para t0 porque a0 sera necessario
+		loop:
+			lb $t1, 0($a1) # carrega para t1 o primeiro byte da string
+			sb $t1, 0($a0) # armazena o byte em t1 no destino (a0)
+			
+			beqz $t1, fim # verifica se t1 � igual a zero. Se o byte n�o for uma "letra" e for um "\n" (caracterizando o fim da string), seu valor ser� igual a zero. Se o byte for "\n" ele vai para a subfunç�o 'end'. Caso contr�rio, segue e volta para o loop
+			
+			addi $a0, $a0, 1 # como o byte em $t1 n�o � "\n" esta linha incrementa para o pr�ximo endereço a ser guardado o pr�ximo byte
+			addi $a1, $a1, 1 # da mesma forma, incrementa-se a1 para ir para o byte seguinte da string
+			
+			j loop # com o endereço de destino e o byte da string devidamente incrementados, volta-se ao loop
+		
+		fim:
+			move $v0, $t0 #com o fim da string, a string em t0 � movida para o registrador que carregar� o valor de retorno da funç�o
+			jr $ra #sai da funç�o e volta para a linha de c�digo que a chamou
 	
+	memcpy:
+		move $t0, $a0 # salva o endereco original de a0 para t0
+		
+		beqz $a2, fim # verifica se o numero de bytes a ser copiado e zero
+		
+		loop:
+			lb $t1, 0($a1) # carrega um byte da fonte para t1
+			sb $t1, 0($a0) # salva o byte carregado em t1 para o destino em a0 
+			
+			addi $a0, $a0, 1 # incrementa o ponteiro de destino para o proximo byte
+			addi $a1, $a1, 1 # incrementa o ponteiro da fonte para o proximo byte
+			addi $a2, $a2, -1 # Decrementa o contador de bytes
+			
+			bnez $a2, loop # se o contador nao for zero, retorna ao loop. Caso contrario, segue
+		fim:
+			move $v0, $t0 # salva o endereco para o registrador v0 (saida da funcao)
+			jr $ra # retorna para a linha de codigo que chamou a funcao
+			
+	strcmp:
+		loop:
+			lb $t0, 0($a0) # carrega o caractere da primeira string em t0
+			lb $t1, 0($a1) # carrega o caractere da segunda string em t1
+			
+			sub $t2, $t0, $t1 # confere se os caracteres sao iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres sao iguais
+			
+			bnez $t2, saida # confere se o resultado da subtracao e diferente de zero. Se for, vai para a funcao saida e sai do loop.
+			beqz $t0, saida # confere se o caractere da primeira string e NULL
+			beqz $t1, saida # confere se o caractere da segunda string e NULL
+			
+			# se o fluxo chegou aqui, e porque os caracteres sao iguais e nao nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os proximos caracteres
+			addi $a0, $a0, 1 
+			addi $a1, $a1, 1
+			j loop # retorna ao loop
+			
+		saida:
+			move $v0, $t2 # como os caracteres foram diferentes ou NULL, o loop e quebrado e move-se o valor de t2 para o registrador v0 (retorno de funcao)
+			jr $ra # pula para a linha que chamou a funcao
+	
+	strncmp:
+		move $t3, $a2 # carrega a quantidade de caracteres a ser comparada
+		
+		loop:
+			lb $t0, 0($a0) # carrega o caractere da primeira string em t0
+			lb $t1, 0($a1) # carrega o caractere da segunda string em t1
+			
+			sub $t2, $t0, $t1 # confere se os caracteres sao iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres sao iguais
+			
+			bnez $t2, saida # confere se o resultado da subtracao e diferente de zero. Se for, vai para a funcao saida e sai do loop.
+			beqz $t0, saida # confere se o caractere da primeira string e NULL
+			beqz $t1, saida # confere se o caractere da segunda string e NULL
+			beqz $t3, saida # confere se o valor de quantidade de caracteres foi zerado
+			
+			# se o fluxo chegou aqui, e porque os caracteres sao iguais e nao nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os proximos caracteres
+			addi $a0, $a0, 1 
+			addi $a1, $a1, 1
+			addi $t3, $t3, -1
+			j loop # retorna ao loop
+			
+		saida:
+			move $v0, $t3 # como os caracteres foram diferentes ou NULL, o loop e quebrado e move-se o valor de t3 para o registrador v0 (retorno de funcao)
+			jr $ra # pula para a linha que chamou a funcao
+			
+	strcat:
+		move $v0, $a0 # salva o endereço original da destination no registrador de retorno
+		move $t0, $a0 # faz uma c�pia do endereço da destination para o registrador $t0
+		move $t2, $a1 # move o endereço da source para t2
+		
+		encontraFimLoop:
+			lb $t1, 0($t0) # carrega o byte da copia de destination em t1
+			beqz $t1, copiaFonteLoop # se o byte for NULL, chama a funcao que copia os bytes da string source
+			addi $t0, $t0, 1 # se o byte nao for NULL, incrementa um byte e retorna ao loop
+			j encontraFimLoop
+		
+		copiaFonteLoop:
+			lb $t3, 0($t2) # carrega o byte atual da string source apontado por t2 para t3
+			sb $t3, 0($t0) # salva o caractere de source em destination
+			
+			beqz $t3, fimDaFuncao # se t3 for NULL, chama a funcao
+			
+			addi $t0, $t0, 1 # avanca o ponteiro de destination
+			addi $t2, $t2, 1 # avanca o ponteiro de source
+			j copiaFonteLoop # continua o loop
+			
+		fimDaFuncao:
+			jr $ra # retorna o valor 
 # finaliza o codigo
 encerra: 
   addi $v0, $0, 10
