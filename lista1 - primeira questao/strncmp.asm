@@ -4,19 +4,16 @@
 # ATIVIDADE 1VA
 # PRIMEIRA QUEST�O - LETRA D
 
-# FUNÇ�O STRNCMP
-
-
-
+# FUNCAOO STRNCMP
 .data
 
 	# strings de teste
 	string1: .asciiz "guitarra"
 	string2: .asciiz "baixo"
-	string3: .asciiz "guitarra"
+	string3: .asciiz "gutarra"
 	num: .word 3
 	
-	# strings de sa�da
+	# strings de saida
 	maiorQue: .asciiz "A primeira string � maior que a segunda, portanto as strings s�o diferentes"
 	igual: .asciiz "As strings s�o iguais"
 	menorQue: .asciiz "A primeira string � menor que a segunda, portanto as strings s�o diferentes"
@@ -28,7 +25,7 @@
 
 	main:
 		la $a0, string1 # carrega uma string em a0 
-		la $a1, string2 # carrega outra string para a1
+		la $a1, string3 # carrega outra string para a1
 		lw $a2, num # carrega o valor da quantidade de caracteres a ser comparada
 		
 		jal strcmp # chama a funç�o 
@@ -38,29 +35,29 @@
 		beqz $s0, imprimeIgual # se o valor de retorno for zero, significa que as string s�o iguais. Chama a funç�o que imprime o resultado
 		bnez $s0, imprimeDiferente # se o valor de retorno for diferente de zero, as strings s�o diferentes. Chama a funç�o que imprime o resultado
 				
-	strcmp:
+	strncmp:
 		move $t3, $a2 # carrega a quantidade de caracteres a ser comparada
 		
 		loop:
 			lb $t0, 0($a0) # carrega o caractere da primeira string em t0
 			lb $t1, 0($a1) # carrega o caractere da segunda string em t1
 			
-			sub $t2, $t0, $t1 # confere se os caracteres s�o iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres s�o iguais
+			sub $t2, $t0, $t1 # confere se os caracteres sao iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres sao iguais
 			
-			bnez $t2, saida # confere se o resultado da subtraç�o � diferente de zero. Se for, vai para a funç�o sa�da e sai do loop.
-			beqz $t0, saida # confere se o caractere da primeira string � NULL
-			beqz $t1, saida # confere se o caractere da segunda string � NULL
+			bnez $t2, saida # confere se o resultado da subtracao e diferente de zero. Se for, vai para a funcao saida e sai do loop.
+			beqz $t0, saida # confere se o caractere da primeira string e NULL
+			beqz $t1, saida # confere se o caractere da segunda string e NULL
 			beqz $t3, saida # confere se o valor de quantidade de caracteres foi zerado
 			
-			# se o fluxo chegou aqui, � porque os caracteres s�o iguais e n�o nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os pr�ximos caracteres
+			# se o fluxo chegou aqui, e porque os caracteres sao iguais e nao nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os proximos caracteres
 			addi $a0, $a0, 1 
 			addi $a1, $a1, 1
 			addi $t3, $t3, -1
 			j loop # retorna ao loop
 			
 		saida:
-			move $v0, $t3 # como os caracteres foram diferentes ou NULL, o loop � quebrado e move-se o valor de t3 para o registrador v0 (retorno de funç�o)
-			jr $ra # pula para a linha que chamou a funç�o
+			move $v0, $t3 # como os caracteres foram diferentes ou NULL, o loop e quebrado e move-se o valor de t3 para o registrador v0 (retorno de funcao)
+			jr $ra # pula para a linha que chamou a funcao
 		
 	
 	imprimeIgual:

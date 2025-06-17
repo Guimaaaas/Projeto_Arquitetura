@@ -25,8 +25,8 @@
 .text
 
 	main:
-		la $a0, string1 # carrega uma string em a0 
-		la $a1, string3 # carrega outra string para a1
+		la $a0, string2 # carrega uma string em a0 
+		la $a1, string1 # carrega outra string para a1
 		
 		jal strcmp # chama a funç�o 
 		
@@ -40,20 +40,20 @@
 			lb $t0, 0($a0) # carrega o caractere da primeira string em t0
 			lb $t1, 0($a1) # carrega o caractere da segunda string em t1
 			
-			sub $t2, $t0, $t1 # confere se os caracteres s�o iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres s�o iguais
+			sub $t2, $t0, $t1 # confere se os caracteres sao iguais, subtraindo os valores em t0 e t1. Se o resultado for zero, os caracteres sao iguais
 			
-			bnez $t2, saida # confere se o resultado da subtraç�o � diferente de zero. Se for, vai para a funç�o sa�da e sai do loop.
-			beqz $t0, saida # confere se o caractere da primeira string � NULL
-			beqz $t1, saida # confere se o caractere da segunda string � NULL
+			bnez $t2, saida # confere se o resultado da subtracao e diferente de zero. Se for, vai para a funcao saida e sai do loop.
+			beqz $t0, saida # confere se o caractere da primeira string e NULL
+			beqz $t1, saida # confere se o caractere da segunda string e NULL
 			
-			# se o fluxo chegou aqui, � porque os caracteres s�o iguais e n�o nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os pr�ximos caracteres
+			# se o fluxo chegou aqui, e porque os caracteres sao iguais e nao nulos. O fluxo segue para o loop, incrementando-se um byte em t0 e t1 para se checar os proximos caracteres
 			addi $a0, $a0, 1 
 			addi $a1, $a1, 1
 			j loop # retorna ao loop
 			
 		saida:
-			move $v0, $t2 # como os caracteres foram diferentes ou NULL, o loop � quebrado e move-se o valor de t2 para o registrador v0 (retorno de funç�o)
-			jr $ra # pula para a linha que chamou a funç�o
+			move $v0, $t2 # como os caracteres foram diferentes ou NULL, o loop e quebrado e move-se o valor de t2 para o registrador v0 (retorno de funcao)
+			jr $ra # pula para a linha que chamou a funcao
 		
 	
 	imprimeIgual:
