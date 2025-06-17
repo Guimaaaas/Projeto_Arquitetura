@@ -24,7 +24,7 @@
 		jal fim # finaliza o programa
 	
 	strcpy:
-		move $t0, $a0 #move o endereço para t0 porque a0 será necessário
+		move $t0, $a0 #move o endereco para t0 porque a0 sera necessario
 		
 		loop:
 			lb $t1, 0($a1) # carrega para t1 o primeiro byte da string

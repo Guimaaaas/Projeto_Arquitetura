@@ -37,19 +37,19 @@
 		move $t2, $a1 # move o endereço da source para t2
 		
 		encontraFimLoop:
-			lb $t1, 0($t0) # carrega o byte da c�pia de destination em t1
-			beqz $t1, copiaFonteLoop # se o byte for NULL, chama a funç�o que copia os bytes da string source
-			addi $t0, $t0, 1 # se o byte n�o for NULL, incrementa um byte e retorna ao loop
+			lb $t1, 0($t0) # carrega o byte da copia de destination em t1
+			beqz $t1, copiaFonteLoop # se o byte for NULL, chama a funcao que copia os bytes da string source
+			addi $t0, $t0, 1 # se o byte nao for NULL, incrementa um byte e retorna ao loop
 			j encontraFimLoop
 		
 		copiaFonteLoop:
 			lb $t3, 0($t2) # carrega o byte atual da string source apontado por t2 para t3
 			sb $t3, 0($t0) # salva o caractere de source em destination
 			
-			beqz $t3, fimDaFuncao # se t3 for NULL, chama a funç�o
+			beqz $t3, fimDaFuncao # se t3 for NULL, chama a funcao
 			
-			addi $t0, $t0, 1 # avança o ponteiro de destination
-			addi $t2, $t2, 1 # avança o ponteiro de source
+			addi $t0, $t0, 1 # avanca o ponteiro de destination
+			addi $t2, $t2, 1 # avanca o ponteiro de source
 			j copiaFonteLoop # continua o loop
 			
 		fimDaFuncao:
