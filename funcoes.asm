@@ -73,11 +73,13 @@ ad_pessoa:
 			j verificador_vaga
 		# Neste momento inserimos um usuario em uma vaga disponivel
 		tem_vaga:
-		 # carrega em a0 o que devemos incerir no local do nome
+		 # Inserindo em a0 o nome desejado
 		addi $a0, $t1, 0 
-		# carrega o espaço a ser incerido
+		# Inserindo no espaço desejado
 		addi $a1, $t3, 0
+		# Armazenando a posicao original do arquivo
 		addi $t9, $ra, 0
+		# Copiando a string em um novo endereco
 		jal strcpy
 		addi $ra, $t9, 0
 		# A função terminou retorna ao inicio
@@ -89,17 +91,7 @@ ad_pessoa:
 		addi $v0, $zero, 2
 		#fim da funcao
 		jr $ra
-	####################################################
-	vaga_disponivel:  # se chegarmos aqui é por que o nome pode ser incerido
-    
-    addi $a0, $t7, 0 # carrega em a0 o que devemos incerir no local do nome
-    addi $a1, $t4, 0 # carrega o espaço a ser incerido
-    addi $t9, $ra, 0 # salva a posição original do arquivo
-    jal strcpy  # copia a string no novo local controlando o numero de caracteres par aque o mesmo não utrapasse 19
-    addi $ra, $t9, 0 # recupera a posição original do arquivo
-
-   
-	####################################################
+	
 # finaliza o codigo
 encerra: 
   addi $v0, $0, 10
